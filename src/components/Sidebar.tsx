@@ -43,16 +43,43 @@ function SidebarComp() {
         },
     };
 
+    const childVariants= {
+        open: {
+            opacity: 1,
+            y: 0,
+        },
+        closed: {
+            opacity: 0,
+            y: -10,
+        },
+    };
+
+    const parentVariants = {
+        open: {
+            transition: {
+                staggerChildren: 0.07,
+                delayChildren: 0.2,
+            }
+        },
+        closed: {
+            transition: {
+                staggerChildren: 0.05,
+                delayChildren: -1,
+            }
+        },
+    }
+
     return(
-        <div className="border-r border-neutral-100 h-full">
+        <motion.div 
+            initial={false}
+            animate={isOpen ? "open" : "closed"}
+            exit= "closed"
+            transition={{ duration: 0.3}}
+
+            className="border-r border-neutral-100 h-full">
             
             <motion.nav 
-                initial={false}
-                animate={isOpen ? "open" : "closed"}
                 variants={sidebarVariants}
-                transition={{
-                    duration: 0.3,
-                }}
                 className={`bg-white shadow-md h-full`}>
                 <div className="p-4 flex justify-between items-center">
                     <h2 className={`text-xl font-semibold ${!isOpen && "sr-only"}`}>
@@ -71,9 +98,13 @@ function SidebarComp() {
                 <div className="relative">
                 {/* Sidebar content  */}
                     <nav className="p-4">
-                        <ul className="space-y-2">
+                        <motion.ul 
+                            variants={parentVariants}
+                        className="space-y-2">
                             {links.map((link) =>(
-                                <li key={link.name}>
+                                <motion.li 
+                                    variants={childVariants}
+                                    key={link.name}>
                                     <a
                                         href={link.href}
                                         className="flex items-center p-2 text-gray-700 rounded hover:bg-gray-200"
@@ -82,15 +113,15 @@ function SidebarComp() {
                                             {link.icon}
                                             {isOpen && link.name}
                                     </a>
-                                </li>
+                                </motion.li>
                             ))}
-                        </ul>
+                        </motion.ul>
                     </nav>
                 </div>
 
             </motion.nav>
 
-        </div>
+        </motion.div>
     );
 };
 
