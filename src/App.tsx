@@ -2,12 +2,14 @@
 
 import ButtonComp from "./components/Button"
 import CardComp from "./components/Card"
+import DashboardComp from "./components/Dashboard"
 
 function App() {
   return (
     <>
-      <ButtonComp />
-      <CardComp />
+      {/* <ButtonComp /> */}
+      {/* <CardComp /> */}
+      <DashboardComp/>
     </>
   )
 }
