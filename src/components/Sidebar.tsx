@@ -73,6 +73,7 @@ function SidebarComp() {
         <motion.div 
             initial={false}
             animate={isOpen ? "open" : "closed"}
+            whileHover= "open"
             exit= "closed"
             transition={{ duration: 0.3}}
 
@@ -111,7 +112,8 @@ function SidebarComp() {
                                         title={!isOpen ? link.name : ""}
                                         >
                                             {link.icon}
-                                            {isOpen && link.name}
+                                            {/* {isOpen && link.name} */}
+                                            {link.name}
                                     </a>
                                 </motion.li>
                             ))}
