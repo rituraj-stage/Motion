@@ -1,4 +1,7 @@
 import { IconRocket } from "@tabler/icons-react"
+import { useMotionValueEvent, useScroll, useTransform , motion } from "motion/react";
+import { useRef } from "react";
+
 
 function ScrollComp(){
     return (
@@ -13,8 +16,18 @@ function ScrollComp(){
 }
 
 const Card = ({feature} : {feature:Feature}) =>{
+    const ref = useRef<HTMLDivElement>(null);
+    const {scrollYProgress} = useScroll({
+        target: ref,
+        offset: ["start end" , "end start"]
+    })
+    const translateContent = useTransform(scrollYProgress, [0,1], [-200,200]);
+    // useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    //     console.log("changed values", latest);
+    // })
     return (
         <div
+            ref={ref}
             key = {feature.title} 
             className= "grid grid-cols-2 items-center gap-20 py-40"
         >
@@ -23,7 +36,7 @@ const Card = ({feature} : {feature:Feature}) =>{
                 <h2 className="text-4xl font-bold text-white">{feature.title}</h2>
                 <p className="text-lg text-neutral-400">{feature.description}</p>
             </div>
-            <div>{feature.content}</div>
+            <motion.div>{feature.content}</motion.div>
         </div>
     )
 }
