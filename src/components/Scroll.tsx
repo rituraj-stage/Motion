@@ -36,7 +36,7 @@ const Card = ({feature} : {feature:Feature}) =>{
                 <h2 className="text-4xl font-bold text-white">{feature.title}</h2>
                 <p className="text-lg text-neutral-400">{feature.description}</p>
             </div>
-            <motion.div>{feature.content}</motion.div>
+            <div>{feature.content}</div>
         </div>
     )
 }
