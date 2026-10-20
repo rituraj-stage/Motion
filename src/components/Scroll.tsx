@@ -1,5 +1,5 @@
 import { IconRocket } from "@tabler/icons-react"
-import { useMotionValueEvent, useScroll, useTransform , motion } from "motion/react";
+import { useMotionValueEvent, useScroll, useTransform , motion, useMotionTemplate, useSpring } from "motion/react";
 import { useRef } from "react";
 
 
@@ -21,22 +21,41 @@ const Card = ({feature} : {feature:Feature}) =>{
         target: ref,
         offset: ["start end" , "end start"]
     })
-    const translateContent = useTransform(scrollYProgress, [0,1], [-200,200]);
+    const translateContent = useSpring(useTransform(scrollYProgress, [0,1], [200,-300]),
+    {
+        stiffness:100,
+        damping: 30,
+        mass: 1
+    });
+
+    const blur = useTransform(scrollYProgress, [0.5,1] , [0,10]);
+    const scale = useTransform(scrollYProgress, [0.5,1],[1,0.8]);
     // useMotionValueEvent(scrollYProgress, "change", (latest) => {
     //     console.log("changed values", latest);
     // })
+    useMotionValueEvent(scrollYProgress, "change", (latest) => {
+        console.log(latest);
+    });
     return (
         <div
             ref={ref}
             key = {feature.title} 
             className= "grid grid-cols-2 items-center gap-20 py-40"
         >
-            <div className="flex flex-col gap-5">
+            <motion.div 
+                style={{
+                    filter: useMotionTemplate`blur(${blur}px)`,
+                    scale,
+                }}
+                className="flex flex-col gap-5">
                 {feature.icon}
                 <h2 className="text-4xl font-bold text-white">{feature.title}</h2>
                 <p className="text-lg text-neutral-400">{feature.description}</p>
-            </div>
-            <div>{feature.content}</div>
+            </motion.div>
+            <motion.div
+                style={{
+                    y: translateContent,
+                }}>{feature.content}</motion.div>
         </div>
     )
 }

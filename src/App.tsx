@@ -8,9 +8,9 @@ import ScrollComp from "./components/Scroll"
 function App() {
   return (
     <>
-      <ButtonComp />
-      <CardComp />
-      <DashboardComp/>
+      {/* <ButtonComp /> */}
+      {/* <CardComp /> */}
+      {/* <DashboardComp/> */}
       <ScrollComp />
     </>
   )
