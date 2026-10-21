@@ -3,6 +3,7 @@
 import ButtonComp from "./components/Button"
 import CardComp from "./components/Card"
 import DashboardComp from "./components/Dashboard"
+import LayoutCardsComp from "./components/LayoutCards"
 import ScrollComp from "./components/Scroll"
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
       {/* <ButtonComp /> */}
       {/* <CardComp /> */}
       {/* <DashboardComp/> */}
-      <ScrollComp />
+      {/* <ScrollComp /> */}
+      <LayoutCardsComp />
     </>
   )
 }
