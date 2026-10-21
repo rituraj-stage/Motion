@@ -10,8 +10,12 @@ const useOutsideClick = (callback: () => void) => {
                 callback();
             }
         };
-        document.addEventListener("click", handleClick);
+        const timeoutId = setTimeout(() => {
+            document.addEventListener("click", handleClick);
+        }, 0);
+        // document.addEventListener("click", handleClick);
         return () => {
+            clearTimeout(timeoutId);
             document.removeEventListener("click", handleClick);
         };
     }, [callback]);
@@ -19,42 +23,70 @@ const useOutsideClick = (callback: () => void) => {
 }
 function LayoutCardsComp(){
     const [current, setCurrent] = useState<Card | null>(null);
-    // const ref = useRef<HTMLDivElement>(null);
     const ref = useOutsideClick(() => setCurrent(null));
 
     return (
         <div className="py-10 bg-gray-100 min-h-screen relative">
-            {current && (<div className="fixed z-10 h-full w-full inset-0 bg-black/50 backdrop-blur-sm"></div>)}
+            {current && (
+                <motion.div 
+                    initial={{
+                        opacity: 0,
+                    }}
+                    animate={{
+                        opacity: 1, 
+                    }}
+                    className="fixed z-10 h-full w-full inset-0 bg-black/50 backdrop-blur-sm"></motion.div>)}
             {current && (
                 <motion.div 
                     layoutId= {`card-${current.title}`}
                     ref={ref}
-                    className="h-[600px] fixed inset-0 z-20 m-auto bg-white w-72 rounded-2xl border border-neutral-200 p-4">
-                <img 
+                    className="h-[500px] fixed inset-0 z-20 m-auto bg-white w-72 rounded-2xl border border-neutral-200 p-4 overflow-hidden">
+                <motion.img
+                    layoutId= {`card-image-${current.title}`} 
                     src={current.src} 
                     alt={current.title} 
-                    className="w-full aspect-square rounded-xl"
+                    className="w-full aspect-square rounded-2xl"
                 />  
                 <div className="flex flex-col justify-between items-start">
                     <div className="flex items-start justify-between py-4 w-full gap-2">
                         <div className="flex flex-col items-start gap-2">
-                            <h2 className="font-bold text-xs tracking-tight text-black">
+                            <motion.h2 
+                                layoutId= {`card-title-${current.title}`}
+                                className="font-bold text-xs tracking-tight text-black">
                                 {current.title}
-                            </h2>
-                            <p className="text-[10px] text-neutral-500">
+                            </motion.h2>
+                            <motion.p 
+                                layoutId= {`card-description-${current.title}`}
+                                className="text-[10px] text-neutral-500">
                                 {current.description}
-                            </p>
+                            </motion.p>
                         </div>
-                        <a 
-                            href={current.ctaLink}
-                            className="px-2 py-1 bg-green-500 rounded-full text-white text-xs"
+                        <motion.div
+                            layoutId= {`card-cta-${current.title}`}
                         >
-                            {current.ctaLink}
-                        </a>
+                            <a 
+                                href={current.ctaLink}
+                                className="px-2 py-1 bg-green-500 rounded-full text-white text-xs"
+                            >
+                                {current.ctaLink}
+                            </a>
+                        </motion.div>
                     </div> 
-                    <div className="h-60 overflow-auto">
+                    <motion.div 
+                        initial= {{
+                            filter: 'blur(10px)',
+                            opacity: 0,
+                        }}
+                        animate= {{
+                            filter: 'blur(0px)',
+                            opacity: 1,
+                        }}
+                        transition={{
+                            delay: 0.3
+                        }}
+                        className="h-50 overflow-auto  pb-20 [mask-image:linear-gradient(to_top,transparent_20%,black_80%)]">
                         {current.content()}
-                    </div>   
+                    </motion.div>   
                 </div>  
             </motion.div>)}
             <div className="max-w-lg mx-auto flex flex-col gap-10">
@@ -65,17 +97,26 @@ function LayoutCardsComp(){
                         key={card.title} 
                         className="p-4 rounded-lg cursor-pointer flex justify-between items-center bg-white border border-neutral-200">
                         <div className="flex gap-4 items-center">
-                            <img 
+                            <motion.img 
+                                layoutId= {`card-image-${card.title}`} 
                                 src={card.src} 
                                 alt={card.title} 
                                 className="h-14 aspect-square rounded-lg"
                             />
                             <div className="flex flex-col items-start gap-2">
-                                <h2 className="font-bold text-xs tracking-tight text-black">{card.title}</h2>
-                                <p className="text-[10px] text-neutral-500">{card.description}</p>
+                                <motion.h2 
+                                    layoutId= {`card-title-${card.title}`}
+                                    className="font-bold text-xs tracking-tight text-black">{card.title}
+                                </motion.h2>
+                                <motion.p 
+                                    layoutId= {`card-description-${card.title}`}
+                                    className="text-[10px] text-neutral-500">{card.description}
+                                </motion.p>
                             </div>
                         </div>
-                        <div className="px-2 py-1 bg-green-500 rounded-full text-white text-xs">{card.ctaText}</div>
+                        <motion.div 
+                            layoutId= {`card-cta-${card.title}`}
+                            className="px-2 py-1 bg-green-500 rounded-full text-white text-xs">{card.ctaText}</motion.div>
                     </motion.button>
                 ))}
             </div>
@@ -96,23 +137,26 @@ const cards: Card[] = [
     {
         description: "Bappu",
         title: "Money talks",
-        src: "",
+        src: "./logo.png",
         ctaText: "Play",
-        ctaLink: "",
+        ctaLink: "#",
         content: ()=> {
             return (
                 <p className="text-[10px] text-neutral-500">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, quaerat assumenda ipsa, impedit omnis cupiditate dignissimos sequi maiores placeat molestias similique tenetur consequuntur itaque consectetur delectus earum? Cumque, numquam labore.
+
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nostrum quibusdam obcaecati, itaque dolore ducimus perferendis nisi ea atque. Fugiat adipisci iure soluta nesciunt doloremque commodi exercitationem voluptatum nemo suscipit itaque!
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate enim voluptatem aperiam delectus dolor asperiores nihil facilis dolore, fugit, ullam aliquid quo amet nostrum, suscipit aliquam odit provident animi voluptate!
                 </p>
             );
         },
     },
     {
         description: "Babbu Maan",
-        title: "Money talks",
-        src: "",
+        title: "Power talks",
+        src: "./logo.png",
         ctaText: "Play",
-        ctaLink: "",
+        ctaLink: "#",
         content: ()=> {
             return (
                 <p className="text-[10px] text-neutral-500">
