@@ -6,6 +6,7 @@ import DashboardComp from "./components/Dashboard"
 import LayoutCardsComp from "./components/LayoutCards"
 import NavbarComp from "./components/Navbar"
 import ScrollComp from "./components/Scroll"
+import SlowBlurComp from "./components/SlowBlur"
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
       <DashboardComp/>
       <ScrollComp />
       <LayoutCardsComp /> */}
-      <NavbarComp/>
+      {/* <NavbarComp/> */}
+      <SlowBlurComp />
     </>
   )
 }

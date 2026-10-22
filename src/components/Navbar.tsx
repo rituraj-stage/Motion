@@ -44,7 +44,6 @@ function NavbarComp(){
                             layoutId="hover"
                             className="absolute inset-0 rounded-full w-full h-full bg-black">
                         </motion.div>)}
-                        {/* <span className="relative mix-blend-difference">{item.title}</span> */}
                     </a>
                 ))}</nav>
         </div>
