@@ -1,73 +1,76 @@
 "use-client";
+import type { AnimationSequence } from 'motion';
 // import React from "react";
 import {useAnimate, motion} from 'motion/react';
 
 export const AnimationSequencesComp = () => {
     const [scope, animate] = useAnimate();
+    const sequence: AnimationSequence = [
+        [".loader", 
+            {
+                opacity: [0, 1], 
+                width: "2rem" 
+            }, 
+            {duration: 0.1}
+        ],
+        [".loader", 
+            {rotate: 360*4}, 
+            {duration:2}
+        ],
+        [".loader", 
+            {
+                opacity: [1, 0], 
+                width: "0rem"
+            }, 
+            {
+                duration: 0.1,
+                at: "-0.8",
+            }
+        ],
+        [".text", 
+            {display: "none"},
+            {
+                duration: 0.1,
+                at: "-0.5",
+            }
+        ],
+        ["button", 
+            {
+                width: "5rem", 
+                borderRadius: "1000px"
+            },
+            {duration: 0.3 }
+        ],
+        ["button",
+            {
+                opacity: 1, 
+                scale: [1,1.2, 0.8 , 1], 
+                backgroundImage: "linear-gradient(to right, #00ff99, #00ccff)",
+            }, 
+            {duration: 0.8},
+        ],
+        ["button", 
+            {backgroundImage: "linear-gradient(to right, #00ff99, #00ccff)"},
+            {duration: 0.8},
+        ],
+        [".check-icon", 
+            {opacity: [0,1]},
+            {
+                duration: 0.1,
+                at: '-1.4',
+            }
+        ],
+        [".check-icon path",
+            {pathLength: 1},
+            {
+                duration: 0.3, 
+                type: "tween", 
+                ease: "easeOut"
+            },
+        ],
+    ];
     const startAnimating = async () => {
-        await animate(".loader",
-            {
-                opacity: 1,
-                width: "2rem",
-            },
-            {
-                duration: 0.1,
-            }
-        );
-        await animate(".loader",
-            {
-                rotate: 360*4,
-            },
-            {
-                duration: 2,
-            }
-        )
-        animate(".loader",
-            {
-                opacity: 0,
-                scale: 0,
-            },
-            {
-                duration: 0.1,
-            }
-        );
-        animate('.text', 
-            {display: 'none',},
-            {duration: 0.1,}
-        )
-        await animate('button',
-            {
-                width: "5rem",
-                borderRadius: "1000px",
-            },
-            {duration: 0.3,},
-        )
-        await animate('button',
-            {
-                opacity: 1,
-                scale: [1, 1.2, 0.8, 1],
-                background: "var(--color-green-500)",
-            },
-            {
-                duration: 0.5,
-            }
-        );
-        animate('.check-icon',
-            {
-                opacity: 1,
-            },
-            {
-                duration: 0.1,
-            }
-        );
-        animate('.check-icon path',
-            {
-                pathLength: 1,
-            },
-            {
-                duration: 0.3,
-            }            
-        )
+        animate(sequence);
     }; 
     return (
     <div 
